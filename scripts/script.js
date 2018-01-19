@@ -47,6 +47,22 @@
         }
       };
 
+      //physics object
+      var physics = {
+        variables: {
+          yAcc : -9.8,
+          xAcc : 0,
+        },
+
+        crunch : function (){
+          globalVariables.index += 1;
+          globalVariables.xPos += globalVariables.xVel * globalVariables.frameInterval;
+          globalVariables.yPos += globalVariables.yVel * globalVariables.frameInterval;
+          globalVariables.yVel += this.variables.yAcc * globalVariables.frameInterval;
+          globalVariables.xVel += this.variables.xAcc * globalVariables.frameInterval;
+        }
+      };
+
 
 
       //initialize telemetry panel
@@ -56,8 +72,7 @@
 
       var runtime = {
         main : function (){
-          var yAcc = -9.8;
-          var xAcc = 0;
+
           var bottom;
           var left;
 
@@ -65,11 +80,8 @@
             return;
           }
 
-          globalVariables.index += 1;
-          globalVariables.xPos += globalVariables.xVel * globalVariables.frameInterval;
-          globalVariables.yPos += globalVariables.yVel * globalVariables.frameInterval;
-          globalVariables.yVel += yAcc * globalVariables.frameInterval;
-          globalVariables.xVel += xAcc * globalVariables.frameInterval;
+          physics.crunch();
+
           bottom = Math.round(globalVariables.yPos / globalVariables.pixelRatio);
           left = Math.round(globalVariables.xPos / globalVariables.pixelRatio);
 
