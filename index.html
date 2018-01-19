@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Physics Demo</title>
+  <!--Import Roboto font -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <h1>Physics Demo</h1>
+    <div class="panel clearfix">
+      <section class="inputPanel">
+        <h3>Inputs</h3>
+        <div class="inputRow clearfix">
+          <label for="velocityInput">Input Velocity</label>
+          <input type="text" id="velocityInput">
+        </div>
+
+        <div class="inputRow clearfix">
+          <label for="initialPositionInput">Initial Position</label>
+          <input type="text" id="initialPositionInput">
+        </div>
+
+        <button id="startCommand">Start Simulation</button>
+        <button id="stopCommand">Stop Simulation</button>
+      </section>
+
+      <section class="dataPanel">
+        <h3>Telemetry</h3>
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </section>
+    </div>
+
+
+    <section class="drawPanel">
+      <div class="drawArea">
+        <div class="sprite"></div>
+      </div>
+    </section>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="scripts/script.js"></script>
+
+</body>
+</html>
