@@ -15,16 +15,18 @@
 
       var myVar;
 
-      var startFunction = function(){
-        globalVariables.xVel = Number($('input#velocityInput').val().split(',')[0]);
-        globalVariables.yVel = Number($('input#velocityInput').val().split(',')[1]);
-        globalVariables.xPos = Number($('input#initialPositionInput').val().split(',')[0]);
-        globalVariables.yPos = Number($('input#initialPositionInput').val().split(',')[1]);
-        myVar = setInterval(main,globalVariables.frameIntervalM);
-      };
+      var controller = {
+        startFunction : function(){
+          globalVariables.xVel = Number($('input#velocityInput').val().split(',')[0]);
+          globalVariables.yVel = Number($('input#velocityInput').val().split(',')[1]);
+          globalVariables.xPos = Number($('input#initialPositionInput').val().split(',')[0]);
+          globalVariables.yPos = Number($('input#initialPositionInput').val().split(',')[1]);
+          myVar = setInterval(main,globalVariables.frameIntervalM);
+        },
 
-      var stopFunction = function(){
-        clearInterval(myVar);
+        stopFunction : function(){
+          clearInterval(myVar);
+        }
       };
 
       var updatePanel = function(){
@@ -40,14 +42,10 @@
         $('.sprite').css({'left': x, 'bottom':y});
       };
 
-
       //initialize telemetry panel
       updatePanel();
-      $('button#startCommand').on('click', startFunction);
-      $('button#stopCommand').on('click', stopFunction);
-
-
-
+      $('button#startCommand').on('click', controller.startFunction);
+      $('button#stopCommand').on('click', controller.stopFunction);
 
       var main = function (){
         var yAcc = -9.8;
