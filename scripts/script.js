@@ -1,4 +1,5 @@
     $(document).ready(function(){
+
       //global variable object
       var globalVariables = {
         frameInterval : 0.033, //30 fps
@@ -15,13 +16,14 @@
 
       var myVar;
 
+      //controller object
       var controller = {
         startFunction : function(){
           globalVariables.xVel = Number($('input#velocityInput').val().split(',')[0]);
           globalVariables.yVel = Number($('input#velocityInput').val().split(',')[1]);
           globalVariables.xPos = Number($('input#initialPositionInput').val().split(',')[0]);
           globalVariables.yPos = Number($('input#initialPositionInput').val().split(',')[1]);
-          myVar = setInterval(main,globalVariables.frameIntervalM);
+          myVar = setInterval(runtime.main,globalVariables.frameIntervalM);
         },
 
         stopFunction : function(){
@@ -29,46 +31,51 @@
         }
       };
 
-      var updatePanel = function(){
-        $('li:nth-child(1)').text("Frame Number: " + globalVariables.index);
-        $('li:nth-child(2)').text("T: : " + (globalVariables.index*globalVariables.frameInterval).toPrecision(3) + " s");
-        $('li:nth-child(3)').text("Height: " + globalVariables.yPos.toPrecision(3) + " m");
-        $('li:nth-child(4)').text("Down Range Distance: " + globalVariables.xPos.toPrecision(3) + " m");
-        $('li:nth-child(5)').text("Horizontal Velocity: " + globalVariables.xVel.toPrecision(3) + " m/s");
-        $('li:nth-child(6)').text("Vertical Velocity: " + globalVariables.yVel.toPrecision(3) + " m/s");
+      //panel object
+      var panel = {
+        updatePanel : function(){
+          $('li:nth-child(1)').text("Frame Number: " + globalVariables.index);
+          $('li:nth-child(2)').text("T: : " + (globalVariables.index*globalVariables.frameInterval).toPrecision(3) + " s");
+          $('li:nth-child(3)').text("Height: " + globalVariables.yPos.toPrecision(3) + " m");
+          $('li:nth-child(4)').text("Down Range Distance: " + globalVariables.xPos.toPrecision(3) + " m");
+          $('li:nth-child(5)').text("Horizontal Velocity: " + globalVariables.xVel.toPrecision(3) + " m/s");
+          $('li:nth-child(6)').text("Vertical Velocity: " + globalVariables.yVel.toPrecision(3) + " m/s");
+        },
+
+        redraw : function(x,y){
+          $('.sprite').css({'left': x, 'bottom':y});
+        }
       };
 
-      var redraw = function(x,y){
-        $('.sprite').css({'left': x, 'bottom':y});
-      };
+
 
       //initialize telemetry panel
-      updatePanel();
+      panel.updatePanel();
       $('button#startCommand').on('click', controller.startFunction);
       $('button#stopCommand').on('click', controller.stopFunction);
 
-      var main = function (){
-        var yAcc = -9.8;
-        var xAcc = 0;
-        var bottom;
-        var left;
+      var runtime = {
+        main : function (){
+          var yAcc = -9.8;
+          var xAcc = 0;
+          var bottom;
+          var left;
 
-        if (globalVariables.yPos < 0 && globalVariables.yVel < 0){
-          return;
+          if (globalVariables.yPos < 0 && globalVariables.yVel < 0){
+            return;
+          }
+
+          globalVariables.index += 1;
+          globalVariables.xPos += globalVariables.xVel * globalVariables.frameInterval;
+          globalVariables.yPos += globalVariables.yVel * globalVariables.frameInterval;
+          globalVariables.yVel += yAcc * globalVariables.frameInterval;
+          globalVariables.xVel += xAcc * globalVariables.frameInterval;
+          bottom = Math.round(globalVariables.yPos / globalVariables.pixelRatio);
+          left = Math.round(globalVariables.xPos / globalVariables.pixelRatio);
+
+          panel.updatePanel();
+          panel.redraw(left,bottom);
         }
-
-        globalVariables.index += 1;
-        globalVariables.xPos += globalVariables.xVel * globalVariables.frameInterval;
-        globalVariables.yPos += globalVariables.yVel * globalVariables.frameInterval;
-        globalVariables.yVel += yAcc * globalVariables.frameInterval;
-        globalVariables.xVel += xAcc * globalVariables.frameInterval;
-        bottom = Math.round(globalVariables.yPos / globalVariables.pixelRatio);
-        left = Math.round(globalVariables.xPos / globalVariables.pixelRatio);
-
-        updatePanel();
-        redraw(left,bottom);
-
       };
-
 
     });
