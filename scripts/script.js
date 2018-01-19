@@ -84,7 +84,6 @@
 
           bottom = Math.round(globalVariables.yPos / globalVariables.pixelRatio);
           left = Math.round(globalVariables.xPos / globalVariables.pixelRatio);
-
           panel.updatePanel();
           panel.redraw(left,bottom);
         }
