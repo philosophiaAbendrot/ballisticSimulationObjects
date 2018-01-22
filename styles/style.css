@@ -42,6 +42,12 @@ body{
   position: relative;
 }
 
+.drawArea .earth{
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid limegreen;
+}
+
 .inputPanel{
   width: 60%;
   padding: 20px;

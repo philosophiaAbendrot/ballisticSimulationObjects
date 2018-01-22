@@ -1,4 +1,4 @@
-    //NEXT STEP: Add initializer function which initializes variables within objects.
+//Currently implementing: Add function which draws the Earth and the spacecraft in the appropriate position.
 
     $(document).ready(function(){
 
@@ -19,10 +19,7 @@
           centerDist: null,
           gravConst: 6.67E-11,
           gravMag: null,
-          gravVect: null,
-          radiusPx: null,
-          diamPx: null,
-          pixelRatio: 0.2 //1px = 0.2m
+          gravVect: null
         },
 
         crunch : function (){
@@ -34,20 +31,17 @@
         }
       };
 
-      physics.variables.frameIntervalM = Math.round(physics.variables.frameInterval * 1000);
-      physics.variables.centerDist = physics.variables.radius;
-      physics.variables.radiusPx = Math.round(physics.variables.radius/physics.variables.pixelRatio);
-      physics.variables.diamPx = Math.round(physics.variables.radiusPx * 2);
-
-      var myVar;
-
       //controller object
       var controller = {
         startFunction : function(){
+          //input
           physics.variables.xVel = Number($('input#velocityInput').val().split(',')[0]);
           physics.variables.yVel = Number($('input#velocityInput').val().split(',')[1]);
           physics.variables.xPos = Number($('input#initialPositionInput').val().split(',')[0]);
           physics.variables.yPos = Number($('input#initialPositionInput').val().split(',')[1]);
+          //initialize object variables
+          main.mainInitializer();
+          //start game loop
           myVar = setInterval(main.mainFunc,physics.variables.frameIntervalM);
         },
 
@@ -62,7 +56,14 @@
           bottom: 0,
           left: 0,
           windowWidth: null,
-          windowHeight: null
+          windowHeight: null,
+          //1px = 35000 m
+          pixelRatio: 35000,
+          //variables used to position the earth sprite
+          radiusPx: null,
+          diamPx: null,
+          earthBottom: null,
+          earthLeft: null
         },
 
         updatePanel : function(){
@@ -75,14 +76,13 @@
         },
 
         redraw : function(){
-          this.bottom = Math.round(physics.variables.yPos / physics.variables.pixelRatio);
-          this.left = Math.round(physics.variables.xPos / physics.variables.pixelRatio);
+          this.bottom = Math.round(physics.variables.yPos / this.variables.pixelRatio + this.variables.windowHeight / 2);
+          this.left = Math.round(physics.variables.xPos / this.variables.pixelRatio + this.variables.windowWidth / 2);
           $('.sprite').css({'left': this.left, 'bottom': this.bottom});
         }
       };
 
       //initialize telemetry panel
-      panel.updatePanel();
       $('button#startCommand').on('click', controller.startFunction);
       $('button#stopCommand').on('click', controller.stopFunction);
 
@@ -96,5 +96,31 @@
           panel.updatePanel();
           panel.redraw();
         },
+
+        mainInitializer: function(){
+          //physics variables
+          physics.variables.frameIntervalM = Math.round(physics.variables.frameInterval * 1000);
+          physics.variables.centerDist = physics.variables.radius;
+          //panel variables
+          panel.variables.radiusPx = Math.round(physics.variables.radius / panel.variables.pixelRatio);
+          panel.variables.diamPx = Math.round(panel.variables.radiusPx * 2);
+          panel.variables.windowWidth = $('.drawArea').width();
+          panel.variables.windowHeight = $('.drawArea').height();
+          //initialize position of the earth
+          panel.variables.earthBottom = Math.round(panel.variables.windowHeight / 2) - panel.variables.radiusPx;
+          panel.variables.earthLeft = Math.round(panel.variables.windowWidth / 2) - panel.variables.radiusPx;
+           //draw earth
+          $('.drawArea .earth').css({
+            left: panel.variables.earthLeft,
+            bottom: panel.variables.earthBottom,
+            width: panel.variables.diamPx,
+            height: panel.variables.diamPx
+          });
+          alert("Earth Drawn. DiamPx = " + panel.variables.radiusPx);
+        }
       };
+
+      //initialize telemetry panel
+      panel.updatePanel();
+
     });
