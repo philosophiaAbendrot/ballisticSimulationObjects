@@ -1,0 +1,23 @@
+{
+  "name": "ballisticSimulationObjects",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philosophiaAbendrot/ballisticSimulationObjects.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philosophiaAbendrot/ballisticSimulationObjects/issues"
+  },
+  "homepage": "https://github.com/philosophiaAbendrot/ballisticSimulationObjects#readme",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}

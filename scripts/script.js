@@ -11,8 +11,18 @@
           xPos : 0,
           yPos : 0,
           yAcc : -9.8,
-          xAcc : 0
+          xAcc : 0,
+          massEarth: 5.98E24,
+          radius: 6378000,
+          centerDist: null,
+          gravConst: 6.67E-11,
+          gravMag: null,
+          gravVect: null,
+          radiusPx: null,
+          diamPx: null,
+          pixelRatio: 0.2 //1px = 0.2m
         },
+
         crunch : function (){
           this.variables.index += 1;
           this.variables.xPos += this.variables.xVel * this.variables.frameInterval;
@@ -23,6 +33,9 @@
       };
 
       physics.variables.frameIntervalM = Math.round(physics.variables.frameInterval * 1000);
+      physics.variables.centerDist = physics.variables.radius;
+      physics.variables.radiusPx = Math.round(physics.variables.radius/physics.variables.pixelRatio);
+      physics.variables.diamPx = Math.round(physics.variables.radiusPx * 2);
 
       var myVar;
 
@@ -45,8 +58,7 @@
       var panel = {
         variables : {
           bottom: 0,
-          left: 0,
-          pixelRatio : 0.2 //1px = 0.2m
+          left: 0
         },
 
         updatePanel : function(){
@@ -59,8 +71,8 @@
         },
 
         redraw : function(){
-          this.bottom = Math.round(physics.variables.yPos / panel.variables.pixelRatio);
-          this.left = Math.round(physics.variables.xPos / panel.variables.pixelRatio);
+          this.bottom = Math.round(physics.variables.yPos / physics.variables.pixelRatio);
+          this.left = Math.round(physics.variables.xPos / physics.variables.pixelRatio);
           $('.sprite').css({'left': this.left, 'bottom': this.bottom});
         }
       };
