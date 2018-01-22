@@ -1,5 +1,5 @@
-//Currently implementing: Add function which draws the Earth and the spacecraft in the appropriate position.
-
+//next step: Add additional fields for the telemetry panel.
+//next step: Make simulation terminate when height is < 0
     $(document).ready(function(){
 
       //physics object
@@ -28,6 +28,11 @@
           this.variables.yPos += this.variables.yVel * this.variables.frameInterval;
           this.variables.yVel += this.variables.yAcc * this.variables.frameInterval;
           this.variables.xVel += this.variables.xAcc * this.variables.frameInterval;
+          this.variables.centerDist = Math.sqrt(Math.pow(this.variables.xPos,2) + Math.pow(this.variables.yPos,2));
+          this.variables.gravMag = this.variables.gravConst * this.variables.massEarth / Math.pow(this.variables.centerDist,2);
+          this.variables.gravVect = [- 1 * this.variables.xPos/this.variables.centerDist,-1 * this.variables.yPos/this.variables.centerDist];
+          this.variables.xAcc = this.variables.gravMag * this.variables.gravVect[0];
+          this.variables.yAcc = this.variables.gravMag * this.variables.gravVect[1];
         }
       };
 
@@ -116,7 +121,6 @@
             width: panel.variables.diamPx,
             height: panel.variables.diamPx
           });
-          alert("Earth Drawn. DiamPx = " + panel.variables.radiusPx);
         }
       };
 
