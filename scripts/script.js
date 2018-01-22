@@ -1,3 +1,5 @@
+    //NEXT STEP: Add initializer function which initializes variables within objects.
+
     $(document).ready(function(){
 
       //physics object
