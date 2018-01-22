@@ -1,5 +1,8 @@
 //next step: Add additional fields for the telemetry panel.
 //next step: Make simulation terminate when height is < 0
+
+//changes to commit:
+//Changed title on UI to "Ballistics Simulation"
     $(document).ready(function(){
 
       //physics object
@@ -19,7 +22,9 @@
           centerDist: null,
           gravConst: 6.67E-11,
           gravMag: null,
-          gravVect: null
+          gravVect: null,
+          height: null,
+          absVel: null
         },
 
         crunch : function (){
@@ -33,6 +38,8 @@
           this.variables.gravVect = [- 1 * this.variables.xPos/this.variables.centerDist,-1 * this.variables.yPos/this.variables.centerDist];
           this.variables.xAcc = this.variables.gravMag * this.variables.gravVect[0];
           this.variables.yAcc = this.variables.gravMag * this.variables.gravVect[1];
+          this.variables.height = (this.variables.centerDist - this.variables.radius);
+          this.variables.absVel = Math.sqrt(Math.pow(this.variables.xVel,2) + Math.pow(this.variables.yVel,2));
         }
       };
 
@@ -72,12 +79,17 @@
         },
 
         updatePanel : function(){
-          $('li:nth-child(1)').text("Frame Number: " + physics.variables.index);
-          $('li:nth-child(2)').text("T: : " + (physics.variables.index*physics.variables.frameInterval).toPrecision(3) + " s");
-          $('li:nth-child(3)').text("Height: " + physics.variables.yPos.toPrecision(3) + " m");
-          $('li:nth-child(4)').text("Down Range Distance: " + physics.variables.xPos.toPrecision(3) + " m");
-          $('li:nth-child(5)').text("Horizontal Velocity: " + physics.variables.xVel.toPrecision(3) + " m/s");
-          $('li:nth-child(6)').text("Vertical Velocity: " + physics.variables.yVel.toPrecision(3) + " m/s");
+
+        $('li:nth-child(1)').text("Frame Number: " + physics.variables.index);
+        $('li:nth-child(2)').text("T: : " + (physics.variables.index*physics.variables.frameInterval).toPrecision(3) + " s");
+        $('li:nth-child(3)').text("Height: " + physics.variables.height.toPrecision(3) + " m");
+        $('li:nth-child(4)').text("Velocity: " + physics.variables.absVel.toPrecision(3) + " m/s");
+        $('li:nth-child(5)').text("Horizontal Velocity: " + physics.variables.xVel.toPrecision(3) + " m/s");
+        $('li:nth-child(6)').text("Vertical Velocity: " + physics.variables.yVel.toPrecision(3) + " m/s");
+        $('li:nth-child(7)').text("Vertical Acceleration: " + physics.variables.yAcc.toPrecision(3) + " m/s2");
+        $('li:nth-child(8)').text("Horizontal Acceleration: " + physics.variables.xAcc.toPrecision(3) + " m/s2");
+        $('li:nth-child(9)').text("yPosition: " + physics.variables.yPos.toPrecision(3) + " m");
+        $('li:nth-child(10)').text("xPosition: " + physics.variables.xPos.toPrecision(3) + " m");
         },
 
         redraw : function(){
@@ -94,7 +106,8 @@
       var main = {
         //main function
         mainFunc: function(){
-          if (physics.variables.yPos < 0 && physics.variables.yVel < 0){
+          //if the spacecraft collides with the earth
+          if (physics.variables.height < 0){
             return;
           }
           physics.crunch();
