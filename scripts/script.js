@@ -46,7 +46,8 @@
           physics.variables.yVel = Number($('input#velocityInput').val().split(',')[1]);
           physics.variables.xPos = Number($('input#initialPositionInput').val().split(',')[0]);
           physics.variables.yPos = Number($('input#initialPositionInput').val().split(',')[1]);
-          myVar = setInterval(main,physics.variables.frameIntervalM);
+          myInit = main.initializer();
+          myVar = setInterval(main.mainFunc,physics.variables.frameIntervalM);
         },
 
         stopFunction : function(){
@@ -58,7 +59,9 @@
       var panel = {
         variables : {
           bottom: 0,
-          left: 0
+          left: 0,
+          windowWidth: null,
+          windowHeight: null
         },
 
         updatePanel : function(){
@@ -82,13 +85,15 @@
       $('button#startCommand').on('click', controller.startFunction);
       $('button#stopCommand').on('click', controller.stopFunction);
 
-      var main = function (){
-        if (physics.variables.yPos < 0 && physics.variables.yVel < 0){
-          return;
-        }
-        physics.crunch();
-        panel.updatePanel();
-        panel.redraw();
+      var main = {
+        //main function
+        mainFunc: function(){
+          if (physics.variables.yPos < 0 && physics.variables.yVel < 0){
+            return;
+          }
+          physics.crunch();
+          panel.updatePanel();
+          panel.redraw();
+        },
       };
-
     });
