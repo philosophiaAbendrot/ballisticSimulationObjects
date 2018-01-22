@@ -46,7 +46,6 @@
           physics.variables.yVel = Number($('input#velocityInput').val().split(',')[1]);
           physics.variables.xPos = Number($('input#initialPositionInput').val().split(',')[0]);
           physics.variables.yPos = Number($('input#initialPositionInput').val().split(',')[1]);
-          myInit = main.initializer();
           myVar = setInterval(main.mainFunc,physics.variables.frameIntervalM);
         },
 
